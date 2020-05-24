@@ -6,7 +6,7 @@ namespace Hotel
 {
     public class Reservation
     {
-        public Tuple<string, int, int, string> BookARoom(int roomId, Tuple<int, int> startEndDays, Hotel hotel)
+        public Tuple<string, int, int, string> BookARoom(int? roomId, Tuple<int, int> startEndDays, Hotel hotel)
         {
             var room = CheckIfRoomExists(roomId, hotel);
             if (room == null)
@@ -40,9 +40,9 @@ namespace Hotel
             return "Accepted";
         }
 
-        private Room CheckIfRoomExists(int roomId, Hotel hotel)
+        private Room CheckIfRoomExists(int? roomId, Hotel hotel)
         {
-            return hotel.Rooms.Where(x => x.Id == roomId)
+			return hotel.Rooms.Where(x => x.Id == roomId)
 				.FirstOrDefault();
         }
 
@@ -59,6 +59,27 @@ namespace Hotel
         private Tuple<string, int, int, string> PrintBooking(int id, Tuple<int, int> reservedDays, string status)
         {
             return Tuple.Create($"Booking {id.ToString()}", reservedDays.Item1, reservedDays.Item2, status);
+        }
+
+		public Tuple<string, int, int, string> BookFirstAvailableRoom(Tuple<int, int> days, Hotel hotel)
+		{
+			string status = "";
+			if (!ValidateInputDays(days.Item1, days.Item2))
+			{
+				return PrintBooking(hotel.BookingId++, days, "Declined");
+			}
+
+			foreach (var room in hotel.Rooms)
+			{
+				status = ResolveReservation(room, days);
+
+                if (status == "Accepted")
+				{
+                    break;
+				}
+			}
+
+            return PrintBooking(hotel.BookingId++, days, status);
         }
     }
 }
