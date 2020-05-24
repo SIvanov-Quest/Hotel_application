@@ -6,7 +6,7 @@ namespace Hotel
 {
     class Program
     {
-        private static Reservation reservation { get; set; } = new Reservation();
+        private static Reservation Reservation { get; } = new Reservation();
         static void Main(string[] args)
         {
             Console.WriteLine("Enter size of your hotel");
@@ -14,11 +14,11 @@ namespace Hotel
 
             if (CheckIfNumber(size))
             {
-				if (Convert.ToInt32(size) > 1000)
-				{
+                if (Convert.ToInt32(size) > 1000)
+                {
                     Console.WriteLine("Size cannot exceed 1000 rooms");
                     return;
-				}
+                }
 
                 var hotel = new Hotel(Convert.ToInt32(size));
 
@@ -45,7 +45,7 @@ namespace Hotel
 
             if (CheckIfNumber(roomId) && CheckIfNumber(startDay) && CheckIfNumber(endDay))
             {
-                bookingsList.Add(reservation.BookARoom(Convert.ToInt32(roomId), Tuple.Create(Convert.ToInt32(startDay), Convert.ToInt32(endDay)), hotel));
+                bookingsList.Add(Reservation.BookARoom(Convert.ToInt32(roomId), Tuple.Create(Convert.ToInt32(startDay), Convert.ToInt32(endDay)), hotel));
                 PrintBookingsTable(bookingsList);
             }
 
@@ -85,54 +85,54 @@ namespace Hotel
 
             //1a1b: Requests outside our planning period are declined (Size=1)
             Console.WriteLine("**TEST CASE 1a**");
-            casesList.Add(reservation.BookARoom(0, Tuple.Create(-4, 2), new Hotel(1)));
-			PrintBookingsTable(casesList);
+            casesList.Add(Reservation.BookARoom(0, Tuple.Create(-4, 2), new Hotel(1)));
+			PrintBookingsTable(casesList, true);
 
             //1b: Requests outside our planning period are declined (Size=1)
             Console.WriteLine("**TEST CASE 1b**");
-            casesList.Add(reservation.BookARoom(0, Tuple.Create(200, 400), new Hotel(1)));
-			PrintBookingsTable(casesList);
+            casesList.Add(Reservation.BookARoom(0, Tuple.Create(200, 400), new Hotel(1)));
+			PrintBookingsTable(casesList, true);
 
 
             //2: Requests are accepted (Size=3)
             Console.WriteLine("**TEST CASE 2**");
-            casesList.Add(reservation.BookARoom(0, Tuple.Create(0, 5), testCase2));
-            casesList.Add(reservation.BookARoom(1, Tuple.Create(7, 13), testCase2));
-            casesList.Add(reservation.BookARoom(2, Tuple.Create(3, 9), testCase2));
-            casesList.Add(reservation.BookARoom(0, Tuple.Create(5, 7), testCase2));
-            casesList.Add(reservation.BookARoom(1, Tuple.Create(6, 6), testCase2));
-            casesList.Add(reservation.BookARoom(1, Tuple.Create(0, 4), testCase2));
-			PrintBookingsTable(casesList);
+            casesList.Add(Reservation.BookARoom(0, Tuple.Create(0, 5), testCase2));
+            casesList.Add(Reservation.BookARoom(1, Tuple.Create(7, 13), testCase2));
+            casesList.Add(Reservation.BookARoom(2, Tuple.Create(3, 9), testCase2));
+            casesList.Add(Reservation.BookARoom(0, Tuple.Create(5, 7), testCase2));
+            casesList.Add(Reservation.BookARoom(1, Tuple.Create(6, 6), testCase2));
+            casesList.Add(Reservation.BookARoom(1, Tuple.Create(0, 4), testCase2));
+			PrintBookingsTable(casesList, true);
 
             //3: Requests are declined (Size=3)
             Console.WriteLine("**TEST CASE 3**");
-            casesList.Add(reservation.BookARoom(0, Tuple.Create(1, 3), testCase3));
-            casesList.Add(reservation.BookARoom(1, Tuple.Create(2, 5), testCase3));
-            casesList.Add(reservation.BookARoom(2, Tuple.Create(1, 9), testCase3));
-            casesList.Add(reservation.BookARoom(0, Tuple.Create(0, 15), testCase3));
-			PrintBookingsTable(casesList);
+            casesList.Add(Reservation.BookARoom(0, Tuple.Create(1, 3), testCase3));
+            casesList.Add(Reservation.BookARoom(1, Tuple.Create(2, 5), testCase3));
+            casesList.Add(Reservation.BookARoom(2, Tuple.Create(1, 9), testCase3));
+            casesList.Add(Reservation.BookARoom(0, Tuple.Create(0, 15), testCase3));
+			PrintBookingsTable(casesList, true);
 
             //4: Requests can be accepted after a decline (Size=3)
             Console.WriteLine("**TEST CASE 4**");
-            casesList.Add(reservation.BookARoom(0, Tuple.Create(1, 3), testCase4));
-            casesList.Add(reservation.BookARoom(1, Tuple.Create(0, 15), testCase4));
-            casesList.Add(reservation.BookARoom(2, Tuple.Create(1, 9), testCase4));
-            casesList.Add(reservation.BookARoom(0, Tuple.Create(2, 5), testCase4));
-            casesList.Add(reservation.BookARoom(0, Tuple.Create(4, 9), testCase4));
-			PrintBookingsTable(casesList);
+            casesList.Add(Reservation.BookARoom(0, Tuple.Create(1, 3), testCase4));
+            casesList.Add(Reservation.BookARoom(1, Tuple.Create(0, 15), testCase4));
+            casesList.Add(Reservation.BookARoom(2, Tuple.Create(1, 9), testCase4));
+            casesList.Add(Reservation.BookARoom(0, Tuple.Create(2, 5), testCase4));
+            casesList.Add(Reservation.BookARoom(0, Tuple.Create(4, 9), testCase4));
+			PrintBookingsTable(casesList, true);
 
             //5: Complex Requests (Size=2)
             Console.WriteLine("**TEST CASE 5**");
-            casesList.Add(reservation.BookARoom(0, Tuple.Create(1, 3), testCase5));
-            casesList.Add(reservation.BookARoom(1, Tuple.Create(0, 4), testCase5));
-            casesList.Add(reservation.BookARoom(0, Tuple.Create(2, 3), testCase5));
-            casesList.Add(reservation.BookARoom(1, Tuple.Create(5, 5), testCase5));
-            casesList.Add(reservation.BookARoom(0, Tuple.Create(4, 10), testCase5));
-            casesList.Add(reservation.BookARoom(0, Tuple.Create(10, 10), testCase5));
-            casesList.Add(reservation.BookARoom(1, Tuple.Create(6, 7), testCase5));
-            casesList.Add(reservation.BookARoom(0, Tuple.Create(8, 10), testCase5));
-            casesList.Add(reservation.BookARoom(1, Tuple.Create(8, 9), testCase5));
-			PrintBookingsTable(casesList);
+            casesList.Add(Reservation.BookARoom(0, Tuple.Create(1, 3), testCase5));
+            casesList.Add(Reservation.BookARoom(1, Tuple.Create(0, 4), testCase5));
+            casesList.Add(Reservation.BookARoom(0, Tuple.Create(2, 3), testCase5));
+            casesList.Add(Reservation.BookARoom(1, Tuple.Create(5, 5), testCase5));
+            casesList.Add(Reservation.BookARoom(0, Tuple.Create(4, 10), testCase5));
+            casesList.Add(Reservation.BookARoom(0, Tuple.Create(10, 10), testCase5));
+            casesList.Add(Reservation.BookARoom(1, Tuple.Create(6, 7), testCase5));
+            casesList.Add(Reservation.BookARoom(0, Tuple.Create(8, 10), testCase5));
+            casesList.Add(Reservation.BookARoom(1, Tuple.Create(8, 9), testCase5));
+			PrintBookingsTable(casesList, true);
         }
 
         private static void PrintBookingsTable(List<Tuple<string, int, int, string>> list, bool clear = false)
@@ -162,12 +162,15 @@ namespace Hotel
 
         private static void PrintToFile()
         {
-            FileStream ostrm;
-            StreamWriter writer;
             TextWriter oldOut = Console.Out;
 
-            ostrm = new FileStream("./Reservations.txt", FileMode.OpenOrCreate, FileAccess.Write);
-            writer = new StreamWriter(ostrm);
+			if (File.Exists("./Reservations.txt"))
+			{
+                File.Delete("./Reservations.txt");
+			}
+
+            FileStream ostrm = new FileStream("./Reservations.txt", FileMode.Create, FileAccess.Write);
+            StreamWriter writer = new StreamWriter(ostrm);
 
             Console.SetOut(writer);
             TestCases();

@@ -14,7 +14,6 @@ namespace Hotel
 
             for (int i = 0; i < NumberOfRooms; i++)
             {
-                var room = new Room(i);
                 Rooms.Add(new Room(i));
             }
         }
