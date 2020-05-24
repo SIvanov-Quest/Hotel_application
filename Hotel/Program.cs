@@ -12,34 +12,34 @@ namespace Hotel
 
         static void Main(string[] args)
 		{
-			Console.WriteLine("Enter size of your hotel");
-			var size = Console.ReadLine();
+            Console.WriteLine("Enter size of your hotel");
+            var size = Console.ReadLine();
 
-			if (CheckIfNumber(size))
-			{
-				if (Convert.ToInt32(size) > 1000)
-				{
-					Console.WriteLine("Size cannot exceed 1000 rooms");
-					return;
-				}
+            if (CheckIfNumber(size))
+            {
+                if (Convert.ToInt32(size) > 1000)
+                {
+                    Console.WriteLine("Size cannot exceed 1000 rooms");
+                    return;
+                }
 
-				Console.WriteLine("Do you to book a specific room? (Y/N)");
-				if (Console.ReadLine().ToLower() == "y")
-				{
-					SpecificRoom = true;
-				}
+                Console.WriteLine("Do you to book a specific room? (Y/N)");
+                if (Console.ReadLine().ToLower() == "y")
+                {
+                    SpecificRoom = true;
+                }
 
                 Booking(new Hotel(Convert.ToInt32(size)), new List<Tuple<string, int, int, string>>(), SpecificRoom);
             }
 
-            //TestCases(); //Uncomment for test cases with specific room
+            //TestCasesWithSpecificRoom(); //Uncomment for test cases with specific room
             //TestCasesWithRandomRoom(); //Uncomment for test cases first available room
 
-			Console.WriteLine("Press any key to close application!");
+            Console.WriteLine("Press any key to close application!");
 
             //PrintToFile(); //Uncomment if you want to print test cases into txt file 
             Console.ReadLine();
-        }
+		}
 
 		private static void Booking(Hotel hotel, List<Tuple<string, int, int, string>> bookingsList, bool specific)
 		{
@@ -65,7 +65,7 @@ namespace Hotel
 				}
 				else
 				{
-					bookingsList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(Convert.ToInt32(startDay), Convert.ToInt32(endDay)), hotel));
+					bookingsList.Add(Reservation.BookARoom(null, Tuple.Create(Convert.ToInt32(startDay), Convert.ToInt32(endDay)), hotel));
                 }
 				PrintBookingsTable(bookingsList);
             }
@@ -167,53 +167,53 @@ namespace Hotel
 
             //1a1b: Requests outside our planning period are declined (Size=1)
             Console.WriteLine("**TEST CASE 1a**");
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(-4, 2), new Hotel(1)));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(-4, 2), new Hotel(1), true));
             PrintBookingsTable(casesList, true);
 
-            //1b: Requests outside our planning period are declined (Size=1)
+            //1b: Requests outside our planning period are declined(Size = 1)
             Console.WriteLine("**TEST CASE 1b**");
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(200, 400), new Hotel(1)));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(200, 400), new Hotel(1), true));
             PrintBookingsTable(casesList, true);
 
 
             //2: Requests are accepted (Size=3)
             Console.WriteLine("**TEST CASE 2**");
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(0, 5), testCase2));
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(7, 13), testCase2));
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(3, 9), testCase2));
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(5, 7), testCase2));
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(6, 6), testCase2));
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(0, 4), testCase2));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(0, 5), testCase2, true));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(7, 13), testCase2, true));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(3, 9), testCase2, true));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(5, 7), testCase2, true));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(6, 6), testCase2, true));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(0, 4), testCase2, true));
             PrintBookingsTable(casesList, true);
 
             //3: Requests are declined (Size=3)
             Console.WriteLine("**TEST CASE 3**");
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(1, 3), testCase3));
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(2, 5), testCase3));
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(1, 9), testCase3));
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(0, 15), testCase3));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(1, 3), testCase3, true));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(2, 5), testCase3, true));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(1, 9), testCase3, true));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(0, 15), testCase3, true));
             PrintBookingsTable(casesList, true);
 
             //4: Requests can be accepted after a decline (Size=3)
             Console.WriteLine("**TEST CASE 4**");
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(1, 3), testCase4));
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(0, 15), testCase4));
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(1, 9), testCase4));
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(2, 5), testCase4));
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(4, 9), testCase4));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(1, 3), testCase4, true));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(0, 15), testCase4, true));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(1, 9), testCase4, true));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(2, 5), testCase4, true));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(4, 9), testCase4, true));
             PrintBookingsTable(casesList, true);
 
             //5: Complex Requests (Size=2)
             Console.WriteLine("**TEST CASE 5**");
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(1, 3), testCase5));
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(0, 4), testCase5));
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(2, 3), testCase5));
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(5, 5), testCase5));
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(4, 10), testCase5));
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(10, 10), testCase5));
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(6, 7), testCase5));
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(8, 10), testCase5));
-            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(8, 9), testCase5));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(1, 3), testCase5, true));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(0, 4), testCase5, true));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(2, 3), testCase5, true));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(5, 5), testCase5, true));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(4, 10), testCase5, true));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(10, 10), testCase5, true));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(6, 7), testCase5, true));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(8, 10), testCase5, true));
+            casesList.Add(Reservation.BookFirstAvailableRoom(Tuple.Create(8, 9), testCase5, true));
             PrintBookingsTable(casesList, true);
         }
 
